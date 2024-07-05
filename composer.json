@@ -1,0 +1,25 @@
+{
+    "name": "xcrodx/deskflow",
+    "description": "A WorkFlow library for any FrameWork",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["workflow","dataflow","nodes","inputs","outputs","flow","deskflow","desk","flow"],
+    "homepage": "https://github.com/xCRODx/DeskFlow",
+    "authors": [
+        {
+            "name": "xCRODx",
+            "email": "cleydsonr2@gmail.com",
+            "homepage": "https://github.com/xCRODx",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DeskFlow\\": "src/DeskFlow"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.0"
+    }
+}
