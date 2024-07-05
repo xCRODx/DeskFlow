@@ -1,7 +1,7 @@
 <?php
 namespace DeskFlow\Core;
 //Manage variables values
-class VariableProvider {
+class MessageProvider {
     public $value;
 
     public function __construct($value = null){

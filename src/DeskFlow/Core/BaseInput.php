@@ -1,7 +1,7 @@
 <?php
 namespace DeskFlow\Core;
 use DeskFlow\Utils\Support\Utils;
-use DeskFlow\Core\VariableProvider;
+use DeskFlow\Core\MessageProvider;
 
 class BaseInput {
     public String $name;
@@ -11,7 +11,7 @@ class BaseInput {
     public $state;
     public $subState;
     public $node; // the owner node
-    public VariableProvider $value; // valor que sera propagado para os outputs
+    public MessageProvider $value; // valor que sera propagado para os outputs
     public $types = []; // tipos aceitos pelo input/output
     public Connection $connections;
 
@@ -60,12 +60,12 @@ class BaseInput {
 
     public function defineTypes(Array $types = []) {
         if(empty($types))
-            return $this->defineTypes([VariableProvider::class]);
+            return $this->defineTypes([MessageProvider::class]);
 
         foreach($types as $type){
             if(is_object($type))
                 $type = get_class($type);
-            if(!is_a((new $type), VariableProvider::class))
+            if(!is_a((new $type), MessageProvider::class))
                 $this->error("Invalid type: {$type}");
 
             $this->types[] = $type;
@@ -82,11 +82,11 @@ class BaseInput {
         foreach ($params as $key => $value) {
             switch($key) {
                 case 'value':
-                    // if(!is_a($value, VariableProvider::class))
+                    // if(!is_a($value, MessageProvider::class))
                     //     throw new InputException($this, 'error setting value parameter');
                     $this->setValue($value);
                     break;
-                    case 'type':
+                    case 'types':
                         $this->defineTypes($value);
                         break;
                     case 'index':
@@ -132,7 +132,7 @@ class BaseInput {
         }
     }
 
-    public function receiveValue(VariableProvider &$var){
+    public function receiveValue(MessageProvider &$var){
 
     }
 
@@ -141,7 +141,7 @@ class BaseInput {
     }
 
     // valor caso pre definido
-    public function setValue(VariableProvider &$value) {
+    public function setValue(MessageProvider &$value) {
         $this->value = $value;
     }
 
@@ -162,10 +162,6 @@ class BaseInput {
 
     public function getindex() {
         return $this->index;
-    }
-
-    public function modify() {
-
     }
 
     public function setActive() {
@@ -199,7 +195,7 @@ class BaseInput {
         $this->connections->addConnection($connection);
     }
 
-    public function canAcceptType(VariableProvider|String $type) {
+    public function canAcceptType(MessageProvider|String $type) {
         if(is_string($type))
             return in_array($type, $this->types);
         

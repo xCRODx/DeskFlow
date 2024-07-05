@@ -6,21 +6,35 @@ use DeskFlow\Core\Output;
 use DeskFlow\Core\Node;
 use DeskFlow\Core\BaseInput;
 
+use DeskFlow\Utils\Providers\TextProvider;
+use DeskFlow\Utils\Providers\DateProvider;
 class DeskFlow {
     public static $events = [];
     public function __construct(){
         Utils::benchStart();
         $node1 = new Node();
-        $input1Node1 = new Input(0, $node1);
-        $input2Node1 = new Input(1, $node1);
-        $input3Node1 = new Input(2, $node1);
-        $output1Node1 = new Output(0, $node1);
-        $output2Node1 = new Output(1, $node1);
+        $param1 = [
+            'types' => [
+                TextProvider::class, 
+                DateProvider::class
+            ]
+        ];
+        $param2 = [
+            'types' => [
+                TextProvider::class
+            ]
+        ];
+        #@todo - Mudar de Output para Emitter e de Input para Target
+        $input1Node1 = new Input(0, $node1, $param1);
+        $input2Node1 = new Input(1, $node1, $param2);
+        $input3Node1 = new Input(2, $node1, $param1);
+        $output1Node1 = new Output(0, $node1, $param1);
+        $output2Node1 = new Output(1, $node1, $param2);
         
         var_dump(Utils::benchElapsed());
         $node2 = new Node();
-        $input1Node2 = new Input(0, $node2);
-        $output1Node2 = new Output(0, $node2);
+        $input1Node2 = new Input(0, $node2, $param1);
+        $output1Node2 = new Output(0, $node2, $param2);
         
         var_dump(Utils::benchElapsed());
         $output1Node1->connect($input1Node2);
@@ -30,9 +44,11 @@ class DeskFlow {
         $output2Node1->connect($input1Node2);
         var_dump(Utils::benchElapsed());
         $output2Node1->connect($input1Node2);
+        var_dump(Utils::benchElapsed());
+        $output1Node2->connect($input2Node1);
         //var_dump($output2Node1);
         $input1Node1->setState(BaseInput::STATE_FINISHED);
-        var_dump($output2Node1->connections);
+        var_dump($output2Node1);
 
         var_dump(Utils::benchElapsed());
         
